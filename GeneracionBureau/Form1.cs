@@ -17,11 +17,18 @@ namespace GeneracionBureau //Botones Dinamicos
         public Form1()
         {
             InitializeComponent();
-            lblVersion.Text = string.Empty;  
+            
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            var versiones = typeof(Form1).Assembly.GetName().Version;
+            lblVersion.Text = "Versión " + versiones.ToString();
+            lblVersion.Visible = true;
+            lblVersion.Refresh();
             LeerArchivo();
             GenerarBotones();
         }
-        string rutaArchivo = "C:\\valid\\clientes\\BUREAU\\clientes.ini"; // Reemplaza con la ruta completa de tu archivo
+        string rutaArchivo = "C:\\valid\\clientes\\BUREAU\\clientes.ini"; // Ruta completa del archivo con los botones
         List<string[]> datos = new List<string[]>();
         private void LeerArchivo()
         {
@@ -30,6 +37,7 @@ namespace GeneracionBureau //Botones Dinamicos
                 using (StreamReader sr = new StreamReader(rutaArchivo))
                 {
                     string linea;
+                    sr.ReadLine();
                     while ((linea = sr.ReadLine()) != null)
                     {
                         string[] datosLinea = linea.Split(','); // Ajusta el delimitador si es diferente
@@ -150,5 +158,7 @@ namespace GeneracionBureau //Botones Dinamicos
                 this.Enabled = true;
             }
         }
+
+        
     }
 }
