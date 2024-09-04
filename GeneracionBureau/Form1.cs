@@ -17,6 +17,7 @@ namespace GeneracionBureau //Botones Dinamicos
         public Form1()
         {
             InitializeComponent();
+            lblVersion.Text = string.Empty;  
             LeerArchivo();
             GenerarBotones();
         }
@@ -63,7 +64,7 @@ namespace GeneracionBureau //Botones Dinamicos
                     btn.Text = datosLinea[0];
                     btn.Location = new Point(x, y);
                     btn.Size = new Size(anchoBoton, altoBoton);
-                    btn.Image = Image.FromFile(datosLinea[2]);
+                    btn.Image = Image.FromFile(datosLinea[3]);
                     btn.ImageAlign = ContentAlignment.MiddleLeft;
                     btn.TextAlign = ContentAlignment.MiddleRight;
                     //btn.FlatStyle = FlatStyle.Flat;
@@ -88,11 +89,21 @@ namespace GeneracionBureau //Botones Dinamicos
                     {
                         try
                         {
-                            System.Diagnostics.Process.Start(datosLinea[1]);
+                            //System.Diagnostics.Process.Start(datosLinea[1]);
+                            this.Enabled = false;
+                            ProcessStartInfo psi = new ProcessStartInfo();
+                            psi.WorkingDirectory = @datosLinea[1];
+                            psi.FileName = @datosLinea[2];
+                            psi.CreateNoWindow = true;
+                            Process p = Process.Start(psi);
+                            p.WaitForExit();
+                            this.Activate();
+                            this.Enabled = true;
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show("Error al ejecutar el programa: " + ex.Message);
+                            this.Enabled = true;
                         }
                     };
 
